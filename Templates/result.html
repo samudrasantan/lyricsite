@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+  
+<head>
+  <title>{{album}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="http://www.w3schools.com/appml/2.0.2/appml.js"></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <style>
+  body {
+      position: relative; 
+  }
+  .section1 {padding-top:50px;height:100vmin;color: #fff; background-color: #ecf0f1;color:#34495e;}
+  .section2 {padding-top:50px;height:100vmin;color: #fff; background-color: #ecf0f1;color:#34495e;}
+  }
+ </style>
+</head>
+    
+        
+        
+            
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+     
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/"> গীতিকার</a>
+      <a class="navbar-brand" href="#"> {{album}} </a>
+    </div>
+    <div>
+       
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            {%for i in gaan%}
+          <li><a href="#{{i}}">{{i}}</a></li>
+          {%endfor%}
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+{%for i in gaan%}
+<div id="{{i}}" class="{% cycle "section1" "section2"%} slideanim">
+  <h1>{{i}}</h1>
+  <p>{{i.lyric|linebreaks}}</p>
+   {% if i.gitikar.all%}<span class="label label-default">গীতিকারঃ</span> {%for n in i.gitikar.all%}<a href="http://127.0.0.1:8000/gitikar/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
+    {% if i.bandname.all%}<span class="label label-default">ব্যান্ডঃ</span>{%for n in i.bandname.all%}<a href="http://127.0.0.1:8000/band/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
+    {% if i.albumname.all%}<span class="label label-default">এলবামঃ</span>{%for n in i.albumname.all%}<a href="http://127.0.0.1:8000/album/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
+    {% if i.catagory.all%}<span class="label label-default">ক্যাটাগরীঃ</span>{%for n in i.catagory.all%}<a href="http://127.0.0.1:8000/catagory/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
+</div>
+    {%endfor%}
+
+    <div id="গীতিকার" class="{% cycle "section1" "section2"%} slideanim">
+    <ul class="pagination">
+        {% for i in combined_list%}
+  <li><a href="http://127.0.0.1:8000/{{i}}">{{i}}</a></li> {%endfor%}
+</div>
+</body>
+</html>

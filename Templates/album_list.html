@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+
+         <div>
+             <table style="width:100%">
+                 <tr>
+            <td>ক্রমিক নং</td>
+            <td>এলবামের নাম</td>
+        </tr>
+                 {%for i in alb%}
+        <tr>
+            <td>{{i.1}}</td>
+            <td><a href="{{i}}">{{i}}</a></td>
+        </tr>
+                 {%endfor%}
+         </div>
+
+{%for i in sa%}
+        <tr>
+            <td>{{i}}</td>
+        </tr>
+                 {%endfor%}
+        
+    </body>
+</html>
