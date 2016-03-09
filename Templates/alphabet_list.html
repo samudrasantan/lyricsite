@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en">
-    <head>
+<html>
+  
+<head>
   <title></title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,92 +10,18 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
-    <body>
-{% include "comb_list.html" %}
-        <div class="container"
- 
-        
-            <div class="row">
-
-{% if a_gaan.all %}
-<div class="col-sm-2">
-    <ul class="list-group">
-     
-        <li class="list-group-item active">গান</li>
-        {%for i in a_gaan.all %}
-        <li class="list-group-item"><a href="http://127.0.0.1:8000/gaan/{{i.id}}">{{i}}</li>
-        {%endfor%}
-    </ul>
-</div>
-{% endif %}
+<body>
 
 
-{% if a_album.all %}
-<div class="col-sm-2">
-   <ul class="list-group">
-        <li class="list-group-item active">এলবাম</li>
-        {%for i in a_album.all %}
-        <li class="list-group-item"><a href="http://127.0.0.1:8000/album/{{i.id}}">{{i}}</a></li>
-        {%endfor%}
-    </ul>
-</div>
-{% endif %}
 
-
-{% if a_gitikar.all %}
-<div class="col-sm-2">
-   <ul class="list-group">
-        <li class="list-group-item active">গীতিকার</li>
-        {%for i in a_gitikar.all %}
-       <li class="list-group-item"><a href="http://127.0.0.1:8000/gitikar/{{i.id}}">{{i}}</li>
-        {%endfor%}
-    </ul>
-</div>
-{% endif %}
-
-{% if a_band.all %}
-<div class="col-sm-2">
-   <ul class="list-group">
-        <li class="list-group-item active">ব্যান্ড</li>
-        {%for i in a_band.all %}
-        <li class="list-group-item"><a href="http://127.0.0.1:8000/band/{{i.id}}">{{i}}</li>
-        {%endfor%}
-    </ul>
-</div>
-{% endif %}
-
-{% if a_prokashok.all %}
-<div class="col-sm-2">
-   <ul class="list-group">
-        <li class="list-group-item active">প্রকাশক</li>
-        {%for i in a_prokashok.all %}
-        <li class="list-group-item"><a href="http://127.0.0.1:8000/prokashok/{{i.id}}">{{i}}</li>
-        {%endfor%}
-    </ul>
-</div>
-{% endif %}
-
-                {% if a_shilpi.all %}
-<div class="col-sm-2">
-   <ul class="list-group">
-        <li class="list-group-item active">শিল্পী</li>
-        {%for i in a_shilpi.all %}
-        <li class="list-group-item"><a href="http://127.0.0.1:8000/shilpi/{{i.id}}">{{i}}</li>
-        {%endfor%}
-    </ul>
-</div>
-{% endif %}
-                {% if a_catagory.all %}
-<div class="col-sm-2">
-   <ul class="list-group">
-        <li class="list-group-item active">ধরণ</li>
-        {%for i in a_catagory.all %}
-        <li class="list-group-item">{{i}}</li>
-        {%endfor%}
-    </ul>
-</div>
-{% endif %}
-</div>
-            </div>
-    </body>
+    {% include "search_form_page.html" %}
+     <div class="container">
+    <ul class="pagination">
+        {% for i in combined_list%}
+  <li><a href="http://{{web_adress}}/list/{{i}}">{{i}}</a></li> {%endfor%}      
+</ul>
+         </div></div>
+    
+    
+</body>
 </html>

@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+{% load staticfiles %}
 <html>
   
 <head>
@@ -9,22 +10,16 @@
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <style>
-  body {
-      position: relative; 
-  }
-  .section1 {padding-top:50px;height:100vmin;color: #fff; background-color: #ecf0f1;color:#34495e;}
-  .section2 {padding-top:50px;height:100vmin;color: #fff; background-color: #ecf0f1;color:#34495e;}
-  }
- </style>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
 </head>
     
         
         
             
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
-     
-<nav class="navbar navbar-inverse navbar-fixed-top">
+    
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div>{% include "search_form_page.html" %}</div>
   <div class="container-fluid">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -32,15 +27,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="http://127.0.0.1:8000/"> গীতিকার</a>
-      <a class="navbar-brand" href="#"> {{album}} </a>
+      <a class="navbar-brand">[ {{album}} ] </a>
     </div>
     <div>
        
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
             {%for i in gaan%}
-          <li><a href="#{{i}}">{{i}}</a></li>
+          <li class="hover"><a href="#{{i}}">{{i}}</a></li>
           {%endfor%}
         </ul>
       </div>
@@ -49,19 +43,55 @@
 </nav>
 {%for i in gaan%}
 <div id="{{i}}" class="{% cycle "section1" "section2"%} slideanim">
-  <h1>{{i}}</h1>
-  <p>{{i.lyric|linebreaks}}</p>
-   {% if i.gitikar.all%}<span class="label label-default">গীতিকারঃ</span> {%for n in i.gitikar.all%}<a href="http://127.0.0.1:8000/gitikar/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
-    {% if i.bandname.all%}<span class="label label-default">ব্যান্ডঃ</span>{%for n in i.bandname.all%}<a href="http://127.0.0.1:8000/band/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
-    {% if i.albumname.all%}<span class="label label-default">এলবামঃ</span>{%for n in i.albumname.all%}<a href="http://127.0.0.1:8000/album/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
-    {% if i.catagory.all%}<span class="label label-default">ক্যাটাগরীঃ</span>{%for n in i.catagory.all%}<a href="http://127.0.0.1:8000/catagory/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
-</div>
+    <div id="lyric_head">
+        <h1>{{i}}</h1>
+    </div>
+    <p>{{i.lyric|linebreaks}}</p>
+<div id="foot_notes">
+    {% if i.gitikar.all%}
+    <span class="label-default">
+            গীতিকারঃ
+    </span> 
+    {%for n in i.gitikar.all%}
+    <span class="label-result">
+    <a href="http://{{web_adress}}/gitikar/{{n.id}}">{{n}}</a>
+    </span>
+    {% if not forloop.last %},
+    {%endif%}
     {%endfor%}
-
-    <div id="গীতিকার" class="{% cycle "section1" "section2"%} slideanim">
-    <ul class="pagination">
-        {% for i in combined_list%}
-  <li><a href="http://127.0.0.1:8000/{{i}}">{{i}}</a></li> {%endfor%}
-</div>
+    {%endif%}
+    {% if i.bandname.all%}
+    <span class="label-default">
+        ব্যান্ডঃ
+    </span>
+    {%for n in i.bandname.all%}
+    <span class="label-result">
+        <a href="http://{{web_adress}}/band/{{n.id}}">{{n}}</a>
+    </span>
+        {% if not forloop.last %},
+    {%endif%}
+    {%endfor%}
+    {%endif%}
+    {% if i.albumname.all%}
+    <span class="label-default">
+        এলবামঃ
+    </span>
+    <span class="label-result">
+    {%for n in i.albumname.all%}<a href="http://{{web_adress}}/album/{{n.id}}">{{n}}</a>
+    </span>
+    {% if not forloop.last %},
+    {%endif%}
+    {%endfor%}
+    {%endif%}
+    {% if i.catagory.all%}
+    <span class="label-default">
+        ক্যাটাগরীঃ
+    </span>
+    {%for n in i.catagory.all%}
+    <span class="label-result">
+        <a href="http://{{web_adress}}/catagory/{{n.id}}">{{n}}</a>{% if not forloop.last %},{%endif%}{%endfor%}{%endif%}
+    </span>
+</div></div>
+    {%endfor%}
 </body>
 </html>
