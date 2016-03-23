@@ -30,9 +30,20 @@ urlpatterns = patterns('',
     url(r'^gaan/(?P<username>[\w|\W]+)/$', 'album.views.gaa_go'),
     url(r'^album/(?P<username>[\w|\W]+)/$', 'album.views.album_go'),
     url(r'^gitikar/(?P<username>[\w|\W]+)/$', 'album.views.git_go'),
-    url(r'^prokashok/(?P<username>[\w|\W]+)/$', 'album.views.pro_go'),
-    url(r'^shilpi/(?P<username>[\w|\W]+)/$', 'album.views.shi_go'),
+    url(r'^catagory/(?P<username>[\w|\W]+)/$', 'album.views.cat_go'),
+    url(r'^prokashok/(?P<username>[\w|\W]+)/$', 'album.views.publisher_album_list'),
+     url(r'^year/(?P<username>[\w|\W]+)/$', 'album.views.publisher_album_list'),
+    url(r'^shilpi/(?P<username>[\w|\W]+)/$', 'album.views.artist_activity'),
     url(r'^band/(?P<username>[\w|\W]+)/$', 'album.views.ban_go'),
+    url(r'^album_details/(?P<username>[\w|\W]+)/$', 'album.views.album_details'),
+
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    )

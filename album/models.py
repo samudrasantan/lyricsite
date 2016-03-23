@@ -1,8 +1,23 @@
 ﻿#pfrom __future__ import unicode_literals
 from django.db import models
+import datetime
+from django.template.defaultfilters import truncatewords
 
 
 # Create your models here.
+
+class Chobi(models.Model):
+    title = models.CharField(max_length=100, verbose_name=u'শিরোনাম')
+    chobi = models.ImageField(upload_to = 'pic_folder/', default = 'pic_folder/None/no-img.jpg', verbose_name=u'ছবি')
+    caption = models.CharField(max_length=500, verbose_name=u'ক্যাপশন', blank=True, null=True)
+
+    def __unicode__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = u'ছবি'
+        verbose_name_plural = u'ছবি'
+
 class Gitikar(models.Model):
     title = models.CharField(max_length=100, verbose_name = u'নাম')
     biography = models.CharField(max_length=1000, blank=True, null=True, verbose_name = u'বিবরন')
@@ -12,7 +27,7 @@ class Gitikar(models.Model):
 
     class Meta:
         verbose_name = u'গীতিকার'
-        verbose_name_plural = u'গীতিকারগণ'
+        verbose_name_plural = u'গীতিকার'
 
 class Prokashok(models.Model):
     title = models.CharField(max_length=150, verbose_name = u'নাম')
@@ -48,10 +63,14 @@ class Bandname(models.Model):
 
 class Albumname(models.Model):
     title = models.CharField(max_length=100, verbose_name = u'নাম')
-    album_text = models.CharField(max_length=1000, blank=True, null=True, verbose_name = u'বিবরন')
-    album_no = models.IntegerField(blank=True, null=True, verbose_name = u'এলবাম নাম্বার')
-    lineup = models.ManyToManyField(Shilpi)
-    prokashok = models.ManyToManyField(Prokashok)
+    album_text = models.CharField(max_length=10000, blank=True, null=True, verbose_name = u'বিবরন')
+    album_no = models.CharField(max_length=1000, blank=True, null=True, verbose_name = u'এলবাম নাম্বার')
+    lineup = models.ManyToManyField(Shilpi, blank=True, null=True, verbose_name = u'লাইন আপ')
+    prokashok = models.ManyToManyField(Prokashok, blank=True, null=True, verbose_name = u'প্রকাশক')
+    chobi = models.ManyToManyField(Chobi, blank=True, null=True, verbose_name = u'ছবি')
+    release_year = models.IntegerField(default=datetime.datetime.now().year, blank=True, null=True, verbose_name = u'মুক্তির বছর')
+    lead_guitar = models.ManyToManyField(Shilpi, blank=True, null=True, verbose_name = u'লিড গিটার', related_name='alb_lg')
+    voice = models.ManyToManyField(Shilpi, blank=True, null=True, verbose_name = u'কন্ঠ', related_name='alb_voice')
     class Meta:
         verbose_name = u'এলবাম'
         verbose_name_plural = u'এলবামগুলো'
@@ -75,16 +94,24 @@ class Catagory(models.Model):
 class Gaan(models.Model):
     title = models.CharField(max_length=100, verbose_name=u'শিরোনাম')
     lyric = models.CharField(max_length=5000, blank=True, null=True, verbose_name=u'গান')
-    gitikar = models.ManyToManyField(Gitikar, blank=True, null=True, verbose_name=u'গীতিকার')
-    shilpi = models.ManyToManyField(Shilpi, blank=True, null=True, verbose_name=u'শিল্পী')
+    gitikar = models.ManyToManyField(Shilpi, blank=True, null=True, verbose_name=u'গীতিকার', related_name ='ga_git')
+    shilpi = models.ManyToManyField(Shilpi, blank=True, null=True, verbose_name=u'শিল্পী', related_name ='ga_voice')
+    surokar = models.ManyToManyField(Shilpi, blank=True, null=True, verbose_name=u'সুর', related_name ='ga_tune')
     bandname = models.ManyToManyField(Bandname, blank=True, null=True, verbose_name=u'ব্যান্ড')
     albumname = models.ManyToManyField(Albumname, blank=True, null=True,verbose_name=u'এলবাম')
     catagory = models.ManyToManyField(Catagory, blank=True, null=True,verbose_name=u'শ্রেণিবিভাগ')
+    video = models.CharField(max_length=1000, blank=True, null=True, verbose_name=u'ইউটিউব')
+    sound = models.CharField(max_length=1000, blank=True, null=True, verbose_name=u'সাউন্ডক্লাউড')
     class Meta:
         verbose_name = u'গান'
         verbose_name_plural = u'গানগুলো'
 
     def __unicode__(self):
         return self.title
+
+    def short_lyric(self):
+        return truncatewords(self.lyric, 25)
+
+
 
 

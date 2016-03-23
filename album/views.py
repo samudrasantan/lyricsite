@@ -13,15 +13,27 @@ from operator import attrgetter
 # Create your views here.
 
 def search_page(request):
+    
+    wa = request.get_host()
+    gaa_all = [i[0] for i in Gaan.objects.values_list('title', flat=True)]
+    git_all = [i[0] for i in Gitikar.objects.values_list('title', flat=True)]
+    pro_all = [i[0] for i in Prokashok.objects.values_list('title', flat=True)]
+    alb_all = [i[0] for i in Albumname.objects.values_list('title', flat=True)]
+    ban_all = [i[0] for i in Bandname.objects.values_list('title', flat=True)]
+    shi_all = [i[0] for i in Shilpi.objects.values_list('title', flat=True)]
+    cat_all = [i[0] for i in Catagory.objects.values_list('title', flat=True)]
+    com_list = sorted(set(list(chain(git_all, alb_all, ban_all, gaa_all, pro_all, shi_all, cat_all))))
+
+
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         na = Gaan.objects.filter(title__contains=q)
         pa = Gaan.objects.filter(lyric__contains=q)
-        ga = list(chain(na, pa))
+        ga = set(list(chain(na, pa)))
         wa = request.get_host()
-        return render (request,'search_result_page.html', {'gaan':ga, 'web_adress': wa})
+        return render (request,'search_result_page.html', {'gaan':ga, 'web_adress': wa, 'combined_list':com_list})
     else:
-        return render(request, 'search_form_page.html',{'error': True},)
+        return render(request, 'search_form_page.html',{'error': True, 'combined_list':com_list},)
 
 def alphabet_list(request):
     wa = request.get_host()
@@ -34,6 +46,18 @@ def alphabet_list(request):
     cat_all = [i[0] for i in Catagory.objects.values_list('title', flat=True)]
     com_list = sorted(set(list(chain(git_all, alb_all, ban_all, gaa_all, pro_all, shi_all, cat_all))))
     return render(request, 'alphabet_list.html', {'web_adress': wa, 'combined_list':com_list})
+
+def alphabet_list_iso(request):
+    wa = request.get_host()
+    gaa_all = [i[0] for i in Gaan.objects.values_list('title', flat=True)]
+    git_all = [i[0] for i in Gitikar.objects.values_list('title', flat=True)]
+    pro_all = [i[0] for i in Prokashok.objects.values_list('title', flat=True)]
+    alb_all = [i[0] for i in Albumname.objects.values_list('title', flat=True)]
+    ban_all = [i[0] for i in Bandname.objects.values_list('title', flat=True)]
+    shi_all = [i[0] for i in Shilpi.objects.values_list('title', flat=True)]
+    cat_all = [i[0] for i in Catagory.objects.values_list('title', flat=True)]
+    com_list = sorted(set(list(chain(git_all, alb_all, ban_all, gaa_all, pro_all, shi_all, cat_all))))
+    return render(request, 'alphabet_list_iso.html', {'web_adress': wa, 'combined_list':com_list})
 
 def list_results (request, alf):
     wa = request.get_host()
@@ -150,3 +174,83 @@ def ban_go(request, username):
     ban = Bandname.objects.get(id=username)
     ga = Gaan.objects.filter(bandname=ban)
     return render (request,'result.html', {'web_adress': wa, 'gaan':ga, 'album':ban, 'combined_list':com_list})
+
+
+def cat_go(request, username):
+    wa = request.get_host()
+    gaa_all = [i[0] for i in Gaan.objects.values_list('title', flat=True)]
+    git_all = [i[0] for i in Gitikar.objects.values_list('title', flat=True)]
+    pro_all = [i[0] for i in Prokashok.objects.values_list('title', flat=True)]
+    alb_all = [i[0] for i in Albumname.objects.values_list('title', flat=True)]
+    ban_all = [i[0] for i in Bandname.objects.values_list('title', flat=True)]
+    shi_all = [i[0] for i in Shilpi.objects.values_list('title', flat=True)]
+    cat_all = [i[0] for i in Catagory.objects.values_list('title', flat=True)]
+    com_list = sorted(set(list(chain(git_all, alb_all, ban_all, gaa_all, pro_all, shi_all, cat_all))))
+
+    cat = Catagory.objects.get(id=username)
+    ga = Gaan.objects.filter(catagory=cat)
+    return render (request,'result.html', {'web_adress': wa, 'gaan':ga, 'album':cat, 'combined_list':com_list})
+
+
+def album_details(request, username):
+    wa = request.get_host()
+    gaa_all = [i[0] for i in Gaan.objects.values_list('title', flat=True)]
+    git_all = [i[0] for i in Gitikar.objects.values_list('title', flat=True)]
+    pro_all = [i[0] for i in Prokashok.objects.values_list('title', flat=True)]
+    alb_all = [i[0] for i in Albumname.objects.values_list('title', flat=True)]
+    ban_all = [i[0] for i in Bandname.objects.values_list('title', flat=True)]
+    shi_all = [i[0] for i in Shilpi.objects.values_list('title', flat=True)]
+    cat_all = [i[0] for i in Catagory.objects.values_list('title', flat=True)]
+    com_list = sorted(set(list(chain(git_all, alb_all, ban_all, gaa_all, pro_all, shi_all, cat_all))))
+
+    alb = Albumname.objects.get(id=username)
+
+    return render (request,'album_details.html', {'web_adress': wa, 'album':alb, 'combined_list':com_list})
+
+def publisher_album_list(request, username):
+    wa = request.get_host()
+    gaa_all = [i[0] for i in Gaan.objects.values_list('title', flat=True)]
+    git_all = [i[0] for i in Gitikar.objects.values_list('title', flat=True)]
+    pro_all = [i[0] for i in Prokashok.objects.values_list('title', flat=True)]
+    alb_all = [i[0] for i in Albumname.objects.values_list('title', flat=True)]
+    ban_all = [i[0] for i in Bandname.objects.values_list('title', flat=True)]
+    shi_all = [i[0] for i in Shilpi.objects.values_list('title', flat=True)]
+    cat_all = [i[0] for i in Catagory.objects.values_list('title', flat=True)]
+    com_list = sorted(set(list(chain(git_all, alb_all, ban_all, gaa_all, pro_all, shi_all, cat_all))))
+    
+    publisher= Prokashok.objects.get(id=username)
+    album_list = publisher.albumname_set.all()
+    return render (request,'album_list.html', {'web_adress': wa, 'album':album_list, 'combined_list':com_list})
+
+def publisher_album_list(request, username):
+    wa = request.get_host()
+    gaa_all = [i[0] for i in Gaan.objects.values_list('title', flat=True)]
+    git_all = [i[0] for i in Gitikar.objects.values_list('title', flat=True)]
+    pro_all = [i[0] for i in Prokashok.objects.values_list('title', flat=True)]
+    alb_all = [i[0] for i in Albumname.objects.values_list('title', flat=True)]
+    ban_all = [i[0] for i in Bandname.objects.values_list('title', flat=True)]
+    shi_all = [i[0] for i in Shilpi.objects.values_list('title', flat=True)]
+    cat_all = [i[0] for i in Catagory.objects.values_list('title', flat=True)]
+    com_list = sorted(set(list(chain(git_all, alb_all, ban_all, gaa_all, pro_all, shi_all, cat_all))))
+    
+    album_list= Albumname.objects.filter(release_year=username)
+    return render (request,'album_list.html', {'web_adress': wa, 'album':album_list, 'combined_list':com_list})
+
+
+def artist_activity(request, username):
+    wa = request.get_host()
+    gaa_all = [i[0] for i in Gaan.objects.values_list('title', flat=True)]
+    git_all = [i[0] for i in Gitikar.objects.values_list('title', flat=True)]
+    pro_all = [i[0] for i in Prokashok.objects.values_list('title', flat=True)]
+    alb_all = [i[0] for i in Albumname.objects.values_list('title', flat=True)]
+    ban_all = [i[0] for i in Bandname.objects.values_list('title', flat=True)]
+    shi_all = [i[0] for i in Shilpi.objects.values_list('title', flat=True)]
+    cat_all = [i[0] for i in Catagory.objects.values_list('title', flat=True)]
+    com_list = sorted(set(list(chain(git_all, alb_all, ban_all, gaa_all, pro_all, shi_all, cat_all))))
+    
+    shilpi= Shilpi.objects.get(id=username)
+    gitikar = shilpi.ga_git.all()
+    voice = shilpi.alb_voice.all()
+    lead = shilpi.alb_lg.all()
+    return render (request,'artist_activity.html', {'web_adress': wa, 'gitikar':gitikar, 'combined_list':com_list, 'shilpi':shilpi, 'voice':voice, 'lead':lead})
+

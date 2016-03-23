@@ -6,7 +6,7 @@
 {{ media }}
 {% endblock %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "css/forms.css" %}" />{% endblock %}
 
 {% block coltype %}colM{% endblock %}
 
@@ -18,7 +18,7 @@
 <a href="{% url 'admin:index' %}">{% trans 'ঘর' %}</a>
 &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
 &rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
-&rsaquo; {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+&rsaquo; {% if add %}{% trans 'নতুন যোগ করুন' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
 </div>
 {% endblock %}
 {% endif %}
